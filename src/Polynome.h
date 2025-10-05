@@ -11,6 +11,7 @@ typedef struct {
   int degree;
   float *coefs;
   float *roots;
+  int hasObviousRoot;
 } Polynome;
 
 // Create & Destroy
@@ -28,5 +29,8 @@ void renderRoots(Polynome *poly);
 // Change polynome
 void setRandomRoots(Polynome *polynome);
 void setRandomCoefsForRoots(Polynome *polynome);
+
+// Comp
+int isAnswerGood(Polynome *polynome, float answer);
 
 #endif

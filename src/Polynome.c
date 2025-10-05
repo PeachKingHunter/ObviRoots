@@ -9,6 +9,7 @@ Polynome *createPolynome(int degree) {
     return NULL;
   }
   polynome->degree = degree;
+  polynome->hasObviousRoot = 0;
 
   // Malloc coefs var
   polynome->coefs = (float *)malloc(sizeof(float) * (polynome->degree + 1));
@@ -134,6 +135,10 @@ void setRandomRoots(Polynome *polynome) {
     int newRoot = rand() % 5 - 2;
     polynome->roots[i] = newRoot;
   }
+  if (numEvidentRoot > 0)
+    polynome->hasObviousRoot = 1;
+  else
+    polynome->hasObviousRoot = 0;
 
   // Console informations
   printf("numEvidentRoot: %d\n", numEvidentRoot);
@@ -164,4 +169,26 @@ void setRandomCoefsForRoots(Polynome *polynome) {
         -polynome->roots[2] * polynome->roots[1] * polynome->roots[0];
   }
   printf("The coefs are settled\n");
+}
+
+// Comp
+int isAnswerGood(Polynome *polynome, float answer) {
+  // Verify entry
+  if (polynome == NULL)
+    return -1;
+
+  // No obvious Root
+  if (polynome->hasObviousRoot == 0) {
+    if (answer == -171717)
+      return 1;
+    return 0;
+  }
+
+  // Have Obvious Root
+  for (int i=0; i< polynome->degree; i++) {
+    if (answer == polynome->roots[i]) 
+      return 1;
+  }
+
+  return 0;
 }
