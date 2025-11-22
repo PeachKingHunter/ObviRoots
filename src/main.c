@@ -6,7 +6,8 @@
 
 #include "Polynome.h"
 
-void changeRootAnswer(float *answer) {
+// Take the keyboards input for change your answer
+void changeRootAnswer(float *answer, float *answerIm) {
   // Verify Entry
   if (answer == NULL)
     return;
@@ -20,24 +21,29 @@ void changeRootAnswer(float *answer) {
   *answer *= 10;
   if (IsKeyPressed(KEY_KP_0)) {
     *answer += 0;
-  } else if (IsKeyPressed(KEY_KP_1)) {
+  } else if (IsKeyPressed(KEY_KP_1) || IsKeyPressed(KEY_ONE)) {
     *answer += 1;
-  } else if (IsKeyPressed(KEY_KP_2)) {
+  } else if (IsKeyPressed(KEY_KP_2) || IsKeyPressed(KEY_TWO)) {
     *answer += 2;
-  } else if (IsKeyPressed(KEY_KP_3)) {
+  } else if (IsKeyPressed(KEY_KP_3) || IsKeyPressed(KEY_THREE)) {
     *answer += 3;
-  } else if (IsKeyPressed(KEY_KP_4)) {
+  } else if (IsKeyPressed(KEY_KP_4) || IsKeyPressed(KEY_FOUR)) {
     *answer += 4;
-  } else if (IsKeyPressed(KEY_KP_5)) {
+  } else if (IsKeyPressed(KEY_KP_5) || IsKeyPressed(KEY_FIVE)) {
     *answer += 5;
-  } else if (IsKeyPressed(KEY_KP_6)) {
+  } else if (IsKeyPressed(KEY_KP_6) || IsKeyPressed(KEY_SIX)) {
     *answer += 6;
-  } else if (IsKeyPressed(KEY_KP_7)) {
+  } else if (IsKeyPressed(KEY_KP_7) || IsKeyPressed(KEY_SEVEN)) {
     *answer += 7;
-  } else if (IsKeyPressed(KEY_KP_8)) {
+  } else if (IsKeyPressed(KEY_KP_8) || IsKeyPressed(KEY_EIGHT)) {
     *answer += 8;
-  } else if (IsKeyPressed(KEY_KP_9)) {
+  } else if (IsKeyPressed(KEY_KP_9) || IsKeyPressed(KEY_NINE)) {
     *answer += 9;
+  } else if (IsKeyPressed(KEY_I)) {
+    *answerIm = temp;
+    *answer = 0;
+    if (*answerIm < -1000)
+      *answerIm = 1;
   } else if (IsKeyPressed(KEY_MINUS) || IsKeyPressed(KEY_KP_SUBTRACT)) {
     *answer = -temp;
   } else if (IsKeyPressed(KEY_BACKSPACE)) {
@@ -52,12 +58,15 @@ void changeRootAnswer(float *answer) {
   }
 }
 
-void toStringRootAnswer(float *answer, char *buffer) {
+// format your roots's value in Re and Im to a str 
+void toStringRootAnswer(float *answer, float *answerIm, char *buffer) {
   // Verify Entry
   if (answer == NULL)
     return;
 
-  if (*answer > -1000) {
+  if (*answerIm > -1000) {
+    sprintf(buffer, "Answer: Obvious Root -> %.0fi + %.0f", *answerIm , *answer);
+  } else if (*answer > -1000) {
     sprintf(buffer, "Answer: Obvious Root -> %.0f", *answer);
   } else {
     sprintf(buffer, "Answer: No Obvious Root");
@@ -79,6 +88,7 @@ int main() {
 
   // Answer vars
   float answer = -171717;
+  float answerIm = -171717;
   char str[100];
 
   // Score vars
@@ -106,16 +116,17 @@ int main() {
       if (phase == 0) {
         setRandomRoots(poly);
         answer = -171717;
+        answerIm = -171717;
       }
     }
-    changeRootAnswer(&answer);
+    changeRootAnswer(&answer, &answerIm);
 
     // Rendering Part
     BeginDrawing();
     ClearBackground(BLACK);
 
     // Draw your answer
-    toStringRootAnswer(&answer, str);
+    toStringRootAnswer(&answer, &answerIm, str);
     DrawText(str, 10, 100, 33, PINK);
 
     // Draw poly
