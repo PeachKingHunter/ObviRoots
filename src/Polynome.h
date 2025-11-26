@@ -11,7 +11,9 @@ typedef struct {
   int degree;
   float *coefs;
   float *roots;
+  float *imRoots;
   int hasObviousRoot;
+  int hasImaginaryRoot;
 } Polynome;
 
 // Create & Destroy
@@ -21,6 +23,7 @@ void deletePolynome(Polynome *polynome);
 // Convert to string
 char *toStringPoly(Polynome *polynome);
 char *toStringRoots(Polynome *polynome);
+void toStringRootAnswer(float *answer, float *answerIm, char *buffer);
 
 // Render
 void renderPolynome(Polynome *poly);

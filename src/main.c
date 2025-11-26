@@ -58,21 +58,6 @@ void changeRootAnswer(float *answer, float *answerIm) {
   }
 }
 
-// format your roots's value in Re and Im to a str 
-void toStringRootAnswer(float *answer, float *answerIm, char *buffer) {
-  // Verify Entry
-  if (answer == NULL)
-    return;
-
-  if (*answerIm > -1000) {
-    sprintf(buffer, "Answer: Obvious Root -> %.0fi + %.0f", *answerIm , *answer);
-  } else if (*answer > -1000) {
-    sprintf(buffer, "Answer: Obvious Root -> %.0f", *answer);
-  } else {
-    sprintf(buffer, "Answer: No Obvious Root");
-  }
-}
-
 int main() {
   srand(time(NULL));
 
@@ -83,8 +68,9 @@ int main() {
   InitWindow(windowWidth, windowHeight, ".?.?.RacineEvidente.?.?.");
 
   // Other variables
-  Polynome *poly = createPolynome(3);
-  int phase = 0;
+  int rdmDegree = rand() % 2 + 2;
+  Polynome *poly = createPolynome(rdmDegree);
+  int phase = -1;
 
   // Answer vars
   float answer = -171717;
@@ -114,6 +100,11 @@ int main() {
 
       // Reset Poly and answer
       if (phase == 0) {
+        // Change the degree
+        rdmDegree = rand() % 2 + 2;
+        poly = createPolynome(rdmDegree);
+
+        // Change randomly roots
         setRandomRoots(poly);
         answer = -171717;
         answerIm = -171717;
@@ -124,6 +115,14 @@ int main() {
     // Rendering Part
     BeginDrawing();
     ClearBackground(BLACK);
+
+    if (phase == -1) {
+      DrawText("Welcome", 50, 30, 33, PINK);
+      DrawText("<Image>", 50, 100, 33, PINK);
+      DrawText("Press To Start", 50, 200, 33, PINK);
+      EndDrawing();
+      continue;
+    }
 
     // Draw your answer
     toStringRootAnswer(&answer, &answerIm, str);
